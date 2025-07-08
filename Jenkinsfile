@@ -30,23 +30,23 @@ pipeline {
             }
         }
 
-        stage('Publish') {
-            steps {
-                echo 'Publishing...'
-                bat 'mvn package -DskipTests -o ./target/publish'
-            }
-        }
+       stage('Publish') {
+    steps {
+        echo 'Publishing...'
+        bat 'mvn package -DskipTests'
+        bat 'mkdir publish || echo Directory already exists'
+        bat 'move target\\demo2-0.0.1-SNAPSHOT.jar publish\\'
+    }
+}
 
         stage('Deploy') {
-            steps {
-                echo 'Deploying to server...'
-                bat '''
-                    REM Chuyển file JAR lên server (thay user, server-ip, và đường dẫn)
-                    scp ./target/publish/*.jar user@server-ip:/path/to/deploy/
-                    REM Kết nối SSH và chạy ứng dụng (dừng app cũ nếu cần)
-                    ssh user@server-ip "taskkill /IM java.exe /F || echo No running Java process & java -jar /path/to/deploy/*.jar &"
-                '''
-            }
-        }
+    steps {
+        echo 'Deploying to server...'
+        bat '''
+            scp publish\\demo2-0.0.1-SNAPSHOT.jar user@server-ip:/path/to/deploy/
+            ssh user@server-ip "taskkill /IM java.exe /F || echo No running Java process & java -jar /path/to/deploy/demo2-0.0.1-SNAPSHOT.jar &"
+        '''
+    }
+}
     } // end stages
 } // end pipeline
