@@ -14,3 +14,9 @@ pipeline {
         }
     }
 }
+stage('Deploy') {
+    steps {
+        sh 'scp target/myapp.jar user@your-server-ip:/var/www/myapp/'
+        sh 'ssh user@your-server-ip "java -jar /var/www/myapp/myapp.jar &"'
+    }
+}
