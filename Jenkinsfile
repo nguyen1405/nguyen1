@@ -43,8 +43,8 @@ pipeline {
     steps {
         echo 'Deploying to server...'
         bat '''
-            scp publish\\demo2-0.0.1-SNAPSHOT.jar admin@192.168.1.100:/home/admin/app/
-            ssh admin@192.168.1.100 "taskkill /IM java.exe /F || echo No running Java process & java -jar /home/admin/app/demo2-0.0.1-SNAPSHOT.jar &"
+            scp publish\\demo2-0.0.1-SNAPSHOT.jar admin@192.168.1.100:/home/admin/app/ || exit /b 1
+            ssh admin@192.168.1.100 "taskkill /IM java.exe /F || echo No running Java process & java -jar /home/admin/app/demo2-0.0.1-SNAPSHOT.jar &" || exit /b 1
         '''
     }
 }
