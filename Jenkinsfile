@@ -13,28 +13,24 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Biên dịch và đóng gói dự án
                 bat 'mvn clean package'
             }
         }
         stage('Test') {
             steps {
-                // Chạy các bài kiểm thử
                 bat 'mvn test'
             }
         }
         stage('Publish') {
             steps {
-                // Di chuyển JAR đã đóng gói
-                bat 'mkdir publish'
+                bat 'if not exist publish mkdir publish'
                 bat 'move target\\*.jar publish\\'
-                bat 'chmod +x publish\\*.jar'
+                bat 'if exist publish\\*.jar (chmod +x publish\\*.jar) else (echo No JAR file found)'
                 bat 'echo Artifact published to publish directory'
             }
         }
         stage('Deploy') {
             steps {
-                // Triển khai lên máy chủ từ xa
                 sshagent(['your-ssh-credential-id']) {
                     bat 'pscp publish\\*.jar %DEPLOY_SERVER%:%DEPLOY_PATH%\\'
                     bat 'plink %DEPLOY_SERVER% "taskkill /IM java.exe /F || echo No running process"'
