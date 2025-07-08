@@ -52,4 +52,4 @@ pipeline {
             bat 'echo Pipeline failed. Check the logs for details.'
         }
     }
-}
+}//ád
