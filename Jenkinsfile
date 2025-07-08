@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Triển khai lên máy chủ từ xa
-                sshagent(['your-ssh-credential-id']) {
+                sshagent(['508b67c5-9f01-4d4c-af85-e1e7388af8e8']) {
                     bat 'pscp publish\\*.jar %DEPLOY_SERVER%:%DEPLOY_PATH%\\'
                     bat 'plink %DEPLOY_SERVER% "taskkill /IM java.exe /F || echo No running process"'
                     bat 'plink %DEPLOY_SERVER% "start java -jar %DEPLOY_PATH%\\*.jar"'
