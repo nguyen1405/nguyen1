@@ -38,7 +38,7 @@ public class HangHoaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Read - Method 2: Request Parameter
+    // Read - Method 2: Request Parameter hhh
     @GetMapping("/search")
     public ResponseEntity<HangHoaDTO> getByParam(@RequestParam String maHangHoa) {
         return hangHoaRepository.findById(maHangHoa)
